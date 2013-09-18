@@ -19,7 +19,6 @@
  * @package   modules
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -616,7 +615,7 @@ class PdfArticleSummary extends PdfBlock
      */
     protected function _setPayUntilInfo( &$iStartPos )
     {
-        $text = $this->_oData->translate( 'ORDER_OVERVIEW_PDF_PAYUPTO' ) . $this->_oData->oxorder__oxbilldate->value; //date( 'd.m.Y', mktime( 0, 0, 0, date ( 'm' ), date ( 'd' ) + 7, date( 'Y' ) ) );
+        $text = $this->_oData->translate( 'ORDER_OVERVIEW_PDF_PAYUPTO' ) . date( 'd.m.Y', strtotime( '+' . $this->_oData->getPaymentTerm() . ' day', strtotime( $this->_oData->oxorder__oxbilldate->value ) ) );
         $this->font( $this->getFont(), '', 10 );
         $this->text( 15, $iStartPos + 4, $text );
         $iStartPos += 4;
@@ -847,10 +846,19 @@ class MyOrder extends MyOrder_parent
         // setting pdf language
         $this->_iSelectedLang = $iSelLang;
 
+        $blIsNewOrder = 0;
         // setting invoice number
         if ( !$this->oxorder__oxbillnr->value ) {
-            $this->oxorder__oxbillnr->setValue($this->getNextBillNum());
-            $this->oxorder__oxbilldate->setValue( date( 'd.m.Y', mktime( 0, 0, 0, date ( 'm' ), date ( 'd' ) + $this->getPaymentTerm(), date( 'Y' ) ) ) );
+            $this->oxorder__oxbillnr->setValue( $this->getNextBillNum() );
+            $blIsNewOrder = 1;
+        }
+        // setting invoice date
+        if ( $this->oxorder__oxbilldate->value == '0000-00-00' ) {
+            $this->oxorder__oxbilldate->setValue( date( 'd.m.Y', mktime( 0, 0, 0, date ( 'm' ), date ( 'd' ), date( 'Y' ) ) ) );
+            $blIsNewOrder = 1;
+        }
+        // saving order if new number or date
+        if ( $blIsNewOrder ){
             $this->save();
         }
 
@@ -1059,7 +1067,7 @@ class MyOrder extends MyOrder_parent
         }
 
         // shop city
-        $sText = $oShop->oxshops__oxcity->getRawValue().', '.date( 'd.m.Y' );
+        $sText = $oShop->oxshops__oxcity->getRawValue().', '.date( 'd.m.Y', strtotime($this->oxorder__oxbilldate->value ) );
         $oPdf->setFont( $oPdfBlock->getFont(), '', 10 );
         $oPdf->text( 195 - $oPdf->getStringWidth( $sText ), $iTop + 8, $sText );
 
@@ -1243,7 +1251,7 @@ class MyOrder extends MyOrder_parent
 
         // payment date
         $oPdf->setFont( $oPdfBlock->getFont(), '', 10 );
-        $text = $this->translate( 'ORDER_OVERVIEW_PDF_PAYUPTO' ).date( 'd.m.Y', mktime( 0, 0, 0, date ( 'm' ), date ( 'd' ) + 7, date( 'Y' ) ) );
+        $text = $this->translate( 'ORDER_OVERVIEW_PDF_PAYUPTO' ) . date( 'd.m.Y', strtotime( '+' . $this->getPaymentTerm() . ' day', strtotime( $this->oxorder__oxbilldate->value ) ) );
         $oPdf->text( 15, $siteH + 4, $text );
     }
 
