@@ -42,6 +42,25 @@ class InvoicepdfOrder_Overview extends InvoicepdfOrder_Overview_parent
     }
 
     /**
+     * Returns pdf export state - can export or not
+     *
+     * @deprecated since v5.3 (2016-08-06); logic of this method will be moved to the InvoicePDF module.
+     *
+     * @return bool
+     */
+    public function canExport()
+    {
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $masterDb = oxDb::getMaster();
+        $sOrderId = $this->getEditObjectId();
+        $sTable = getViewName("oxorderarticles");
+        $sQ = "select count(oxid) from {$sTable} where oxorderid = " . $masterDb->quote($sOrderId) . " and oxstorno = 0";
+        $blCan = (bool) $masterDb->getOne($sQ);
+
+        return $blCan;
+    }
+
+    /**
      * Performs PDF export to user (outputs file to save).
      */
     public function createPDF()
