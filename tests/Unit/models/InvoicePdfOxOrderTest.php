@@ -26,7 +26,7 @@ use \stdClass;
 use \InvoicepdfArticleSummary;
 use \oxField;
 use \InvoicepdfOxOrder;
-use \oxPdf;
+use \InvoicepdfPDF;
 use \ReflectionClass;
 use \oxTestModules;
 
@@ -53,7 +53,7 @@ class InvoicePdfOxOrderTest extends \OxidTestCase
             require_once getShopBasePath() . 'modules/oe/invoicepdf/models/invoicepdfoxorder.php';
             require_once getShopBasePath() . 'modules/oe/invoicepdf/models/invoicepdfblock.php';
             require_once getShopBasePath() . 'modules/oe/invoicepdf/models/invoicepdfarticlesummary.php';
-            require_once getShopBasePath() . 'Core/oxpdf.php';
+            require_once getShopBasePath() . 'Core/InvoicepdfPDF.php';
         }
     }
 
@@ -534,7 +534,7 @@ class InvoicePdfOxOrderTest extends \OxidTestCase
     {
         $this->insertTestOrder();
 
-        oxTestModules::addFunction("oxPdf", "output", "{return '';}");
+        oxTestModules::addFunction("InvoicepdfPDF", "output", "{return '';}");
 
         $invoicePdfOxOrder = $this->getMock('InvoicepdfOxOrder', array('pdfHeader', 'exportStandart', 'pdfFooter'));
         $invoicePdfOxOrder->expects($this->once())->method('pdfHeader');
@@ -562,7 +562,7 @@ class InvoicePdfOxOrderTest extends \OxidTestCase
             }
         }
 
-        oxTestModules::addFunction("oxPdf", "output", "{return '';}");
+        oxTestModules::addFunction("InvoicepdfPDF", "output", "{return '';}");
 
         $invoicePdfOxOrder = $this->getMock('InvoicepdfOxOrder', array('pdfHeader'));
         $invoicePdfOxOrder->expects($this->exactly(3))->method('pdfHeader');
@@ -578,7 +578,7 @@ class InvoicePdfOxOrderTest extends \OxidTestCase
     {
         $this->insertTestOrder();
 
-        oxTestModules::addFunction("oxPdf", "output", "{return '';}");
+        oxTestModules::addFunction("InvoicepdfPDF", "output", "{return '';}");
 
         $invoicePdfOxOrder = $this->getMock('InvoicepdfOxOrder', array('pdfHeader', 'exportDeliveryNote', 'pdfFooter'));
         $invoicePdfOxOrder->expects($this->once())->method('pdfHeader');
@@ -597,7 +597,7 @@ class InvoicePdfOxOrderTest extends \OxidTestCase
     {
         $this->insertTestOrder();
 
-        oxTestModules::addFunction("oxPdf", "output", "{return '';}");
+        oxTestModules::addFunction("InvoicepdfPDF", "output", "{return '';}");
 
         $invoicePdfOxOrder = $this->getMock('InvoicepdfOxOrder', array('getNextBillNum'));
         $invoicePdfOxOrder->expects($this->once())->method('getNextBillNum')->will($this->returnValue('testInvoiceNr'));
@@ -615,7 +615,7 @@ class InvoicePdfOxOrderTest extends \OxidTestCase
     {
         $this->insertTestOrder();
 
-        $oPdf = new oxPdf;
+        $oPdf = new InvoicepdfPDF;
 
         $invoicePdfOxOrder = $this->getMock('InvoicepdfOxOrder', array('_setBillingAddressToPdf', '_setDeliveryAddressToPdf', '_setOrderArticlesToPdf'));
         $invoicePdfOxOrder->expects($this->once())->method('_setBillingAddressToPdf');
@@ -640,7 +640,7 @@ class InvoicePdfOxOrderTest extends \OxidTestCase
         $oArticle->oxorderarticles__oxtitle = new oxField("testtitle");
         $oArticle->oxorderarticles__oxselvariant = $oSelVariantField;
 
-        $oPdf = new oxPdf;
+        $oPdf = new InvoicepdfPDF;
 
         $invoicePdfOxOrder = $this->getMock("InvoicepdfOxOrder", array("getOrderArticles"));
         $invoicePdfOxOrder->expects($this->any())->method('getOrderArticles')->will($this->returnValue(array($oArticle->getId() => $oArticle)));
@@ -669,7 +669,7 @@ class InvoicePdfOxOrderTest extends \OxidTestCase
     {
         $this->insertTestOrder();
 
-        $oPdf = new oxPdf;
+        $oPdf = new InvoicepdfPDF;
 
         $invoicePdfOxOrder = $this->getMock('InvoicepdfOxOrder', array('_setBillingAddressToPdf', '_setDeliveryAddressToPdf', '_setOrderArticlesToPdf'));
         $invoicePdfOxOrder->expects($this->once())->method('_setBillingAddressToPdf');
@@ -688,7 +688,7 @@ class InvoicePdfOxOrderTest extends \OxidTestCase
     {
         $this->insertTestOrder();
 
-        $oPdf = new oxPdf;
+        $oPdf = new InvoicepdfPDF;
         $invoicePdfOxOrder = $this->getProxyClass("InvoicepdfOxOrder");
 
         $invoicePdfOxOrder->load('_testOrderId');
@@ -707,7 +707,7 @@ class InvoicePdfOxOrderTest extends \OxidTestCase
     {
         $this->insertTestOrder();
 
-        $oPdf = new oxPdf;
+        $oPdf = new InvoicepdfPDF;
 
         $invoicePdfOxOrder = $this->getMock('InvoicepdfOxOrder', array('_setBillingAddressToPdf', '_setOrderArticlesToPdf'));
         $invoicePdfOxOrder->expects($this->never())->method('_setBillingAddressToPdf');
@@ -725,7 +725,7 @@ class InvoicePdfOxOrderTest extends \OxidTestCase
     {
         $this->insertTestOrder();
 
-        $oPdf = new oxPdf;
+        $oPdf = new InvoicepdfPDF;
 
         $invoicePdfOxOrder = new InvoicepdfOxOrder();
         $invoicePdfOxOrder->load('_testOrderId');
@@ -754,7 +754,7 @@ class InvoicePdfOxOrderTest extends \OxidTestCase
     {
         $this->insertTestOrder();
 
-        $oPdf = new oxPdf;
+        $oPdf = new InvoicepdfPDF;
 
         $invoicePdfOxOrder = $this->getMock('InvoicepdfOxOrder', array('_setBillingAddressToPdf', '_setOrderArticlesToPdf'));
         $invoicePdfOxOrder->expects($this->once())->method('_setBillingAddressToPdf');

@@ -212,7 +212,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
         }
 
         // initiating pdf engine
-        $oPdf = oxNew('oxPDF');
+        $oPdf = oxNew('InvoicepdfPDF');
         $oPdf->setPrintHeader(false);
         $oPdf->open();
 

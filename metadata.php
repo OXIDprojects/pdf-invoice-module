@@ -41,7 +41,8 @@ $aModule = array(
     ),
     'files'       => array(
         'InvoicepdfBlock'          => 'oe/invoicepdf/models/invoicepdfblock.php',
-        'InvoicepdfArticleSummary' => 'oe/invoicepdf/models/invoicepdfarticlesummary.php'
+        'InvoicepdfArticleSummary' => 'oe/invoicepdf/models/invoicepdfarticlesummary.php',
+        'InvoicepdfPDF'            => 'oe/invoicepdf/core/invoicepdfpdf.php'
     ),
     'blocks'      => array(
         array(
