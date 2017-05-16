@@ -191,8 +191,11 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
      *
      * @param string $sFilename name of report file
      * @param int    $iSelLang  active language
+     * @param string $target the target I: send to browser, S: retrun as string
+     *                      more option see pdf lib.
+     * @return string|null
      */
-    public function genPdf($sFilename, $iSelLang = 0)
+    public function genPdf($sFilename, $iSelLang = 0, $target = 'I')
     {
         // setting pdf language
         $this->setSelectedLang($iSelLang);
@@ -234,7 +237,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
         $this->pdfFooter($oPdf);
 
         // outputting file to browser
-        $oPdf->output($sFilename, 'I');
+        return $oPdf->output($sFilename, $target);
     }
 
 
