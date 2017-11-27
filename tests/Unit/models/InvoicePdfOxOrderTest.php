@@ -51,7 +51,7 @@ class InvoicePdfOxOrderTest extends \OxidTestCase
             require_once getShopBasePath() . 'modules/oe/invoicepdf/models/invoicepdfoxorder.php';
             require_once getShopBasePath() . 'modules/oe/invoicepdf/models/invoicepdfblock.php';
             require_once getShopBasePath() . 'modules/oe/invoicepdf/models/invoicepdfarticlesummary.php';
-            require_once getShopBasePath() . 'Core/InvoicepdfPDF.php';
+            require_once getShopBasePath() . 'modules/oe/invoicepdf/core/InvoicepdfPDF.php';
         }
     }
 
