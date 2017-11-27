@@ -42,10 +42,6 @@ class InvoicepdfOrderOverviewTest extends \OxidTestCase
         parent::setUp();
 
         $invoicePdfOrderClass = getShopBasePath() . 'modules/oe/invoicepdf/controllers/admin/invoicepdforder_overview.php';
-        if (!file_exists($invoicePdfOrderClass)) {
-            $this->markTestSkipped('These tests only work when invoicePDF module is present.');
-        }
-
         if (!class_exists('InvoicepdfOrder_Overview', false)) {
             class_alias('Order_Overview', 'InvoicepdfOrder_Overview_parent');
             require_once $invoicePdfOrderClass;

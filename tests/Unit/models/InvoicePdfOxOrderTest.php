@@ -45,11 +45,6 @@ class InvoicePdfOxOrderTest extends \OxidTestCase
     {
         parent::setUp();
 
-        $invoicePdfOrderClass = getShopBasePath() . 'modules/oe/invoicepdf/models/invoicepdfoxorder.php';
-        if ($this->getTestConfig()->getShopEdition() == 'EE' || !file_exists($invoicePdfOrderClass)) {
-            $this->markTestSkipped('These tests only work when invoicePDF module is present.');
-        }
-
         if (!class_exists('InvoicepdfOxOrder', false)) {
             class_alias('oxOrder', 'InvoicepdfOxOrder_parent');
 
