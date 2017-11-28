@@ -61,7 +61,7 @@ class InvoicepdfArticleSummary extends InvoicepdfBlock
      */
     protected function _setTotalCostsWithoutDiscount(&$iStartPos)
     {
-        $oLang = oxRegistry::getLang();
+        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
 
         // products netto price
         $this->line(15, $iStartPos + 1, 195, $iStartPos + 1);
@@ -97,7 +97,7 @@ class InvoicepdfArticleSummary extends InvoicepdfBlock
      */
     protected function _setTotalCostsWithDiscount(&$iStartPos)
     {
-        $oLang = oxRegistry::getLang();
+        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
 
         // line separator
         $this->line(15, $iStartPos + 1, 195, $iStartPos + 1);
@@ -192,7 +192,7 @@ class InvoicepdfArticleSummary extends InvoicepdfBlock
             if ($dDiscountVal > 0) {
                 $dDiscountVal *= -1;
             }
-            $sPayCost = oxRegistry::getLang()->formatCurrency($dDiscountVal, $this->_oData->getCurrency()) . ' ' . $this->_oData->getCurrency()->name;
+            $sPayCost = \OxidEsales\Eshop\Core\Registry::getLang()->formatCurrency($dDiscountVal, $this->_oData->getCurrency()) . ' ' . $this->_oData->getCurrency()->name;
             $this->text(45, $iStartPos, $this->_oData->translate('ORDER_OVERVIEW_PDF_VOUCHER'));
             $this->text(195 - $this->_oPdf->getStringWidth($sPayCost), $iStartPos, $sPayCost);
             $iStartPos += 4;
@@ -209,8 +209,8 @@ class InvoicepdfArticleSummary extends InvoicepdfBlock
     protected function _setDeliveryInfo(&$iStartPos)
     {
         $sAddString = '';
-        $oLang = oxRegistry::getLang();
-        $oConfig = oxRegistry::getConfig();
+        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         if ($oConfig->getConfigParam('blShowVATForDelivery')) {
             // delivery netto
@@ -252,8 +252,8 @@ class InvoicepdfArticleSummary extends InvoicepdfBlock
     protected function _setWrappingInfo(&$iStartPos)
     {
         if ($this->_oData->oxorder__oxwrapcost->value || $this->_oData->oxorder__oxgiftcardcost->value) {
-            $oLang = oxRegistry::getLang();
-            $oConfig = oxRegistry::getConfig();
+            $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
+            $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
             //displaying wrapping VAT info
             if ($oConfig->getConfigParam('blShowVATForWrapping')) {
@@ -328,8 +328,8 @@ class InvoicepdfArticleSummary extends InvoicepdfBlock
      */
     protected function _setPaymentInfo(&$iStartPos)
     {
-        $oLang = oxRegistry::getLang();
-        $oConfig = oxRegistry::getConfig();
+        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         if ($this->_oData->oxorder__oxstorno->value) {
             $this->_oData->oxorder__oxpaycost->setValue(0);
@@ -400,7 +400,7 @@ class InvoicepdfArticleSummary extends InvoicepdfBlock
      */
     protected function _setPaymentMethodInfo(&$iStartPos)
     {
-        $oPayment = oxNew('oxpayment');
+        $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);
         $oPayment->loadInLang($this->_oData->getSelectedLang(), $this->_oData->oxorder__oxpaymenttype->value);
 
         $text = $this->_oData->translate('ORDER_OVERVIEW_PDF_SELPAYMENT') . $oPayment->oxpayments__oxdesc->value;

@@ -24,10 +24,10 @@
 
 namespace Unit\Modules\Oe\Invoicepdf\Models;
 
+use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\ShopIdCalculator;
 use \stdClass;
 use \InvoicepdfArticleSummary;
-use \oxField;
 use \InvoicepdfOxOrder;
 use \InvoicepdfPDF;
 use \ReflectionClass;
@@ -36,7 +36,7 @@ use \oxTestModules;
 /**
  * Testing myorder module for printing pdf's
  */
-class InvoicePdfOxOrderTest extends \OxidTestCase
+class InvoicePdfOxOrderTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
     /**
      * Prepares test suite.
@@ -46,7 +46,7 @@ class InvoicePdfOxOrderTest extends \OxidTestCase
         parent::setUp();
 
         if (!class_exists('InvoicepdfOxOrder', false)) {
-            class_alias('oxOrder', 'InvoicepdfOxOrder_parent');
+            class_alias(\OxidEsales\Eshop\Application\Model\Order::class, 'InvoicepdfOxOrder_parent');
 
             require_once getShopBasePath() . 'modules/oe/invoicepdf/models/invoicepdfoxorder.php';
             require_once getShopBasePath() . 'modules/oe/invoicepdf/models/invoicepdfblock.php';
@@ -335,10 +335,10 @@ class InvoicePdfOxOrderTest extends \OxidTestCase
     public function testPdfArticleSummary_setWrappingInfo_WithGiftCardOnly()
     {
         $oMyOrder = $this->getTestInvoicepdfOxOrder();
-        $oMyOrder->oxorder__oxwrapvat = new oxField('0', oxField::T_RAW);
-        $oMyOrder->oxorder__oxwrapcost = new oxField('0', oxField::T_RAW);
-        $oMyOrder->oxorder__oxgiftcardvat = new oxField('19', oxField::T_RAW);
-        $oMyOrder->oxorder__oxgiftcardcost = new oxField('8', oxField::T_RAW);
+        $oMyOrder->oxorder__oxwrapvat = new Field('0', Field::T_RAW);
+        $oMyOrder->oxorder__oxwrapcost = new Field('0', Field::T_RAW);
+        $oMyOrder->oxorder__oxgiftcardvat = new Field('19', Field::T_RAW);
+        $oMyOrder->oxorder__oxgiftcardcost = new Field('8', Field::T_RAW);
 
         $oPdf = $this->getPdfTestObject();
         $oPdfArtSum = new InvoicepdfArticleSummary($oMyOrder, $oPdf);
@@ -437,7 +437,7 @@ class InvoicePdfOxOrderTest extends \OxidTestCase
     public function testInvoicepdfArticleSummary_setPayUntilInfo()
     {
         $invoicePdfOxOrder = $this->getTestInvoicepdfOxOrder();
-        $invoicePdfOxOrder->oxorder__oxbilldate = new oxField('2000-01-01', oxField::T_RAW);
+        $invoicePdfOxOrder->oxorder__oxbilldate = new Field('2000-01-01', Field::T_RAW);
 
         $oPdf = $this->getPdfTestObject();
         $oPdfArtSum = new InvoicepdfArticleSummary($invoicePdfOxOrder, $oPdf);
@@ -553,7 +553,7 @@ class InvoicePdfOxOrderTest extends \OxidTestCase
         for ($i = 0; $i < 80; $i++) {
             $this->insertTestOrderArticle();
 
-            $oOrderArticle = oxNew('oxOrderArticle');
+            $oOrderArticle = oxNew(\OxidEsales\Eshop\Application\Model\OrderArticle::class);
             if ($oOrderArticle->load('_testOrderArticleId')) {
                 $oOrderArticle->setId('_testOrderArticleId'.$i);
                 $oOrderArticle->save();
@@ -630,12 +630,12 @@ class InvoicePdfOxOrderTest extends \OxidTestCase
     public function testInvoicepdfOxOrder_exportStandartWhenOrderIsCanceled()
     {
         // marking order article as variant ..
-        $oSelVariantField = $this->getMock('oxfield', array('__get'));
+        $oSelVariantField = $this->getMock('\OxidEsales\Eshop\Core\Field', array('__get'));
         $oSelVariantField->expects($this->once())->method('__get');
 
         $this->insertTestOrder();
         $oArticle = $this->insertTestOrderArticle();
-        $oArticle->oxorderarticles__oxtitle = new oxField("testtitle");
+        $oArticle->oxorderarticles__oxtitle = new Field("testtitle");
         $oArticle->oxorderarticles__oxselvariant = $oSelVariantField;
 
         $oPdf = new InvoicepdfPDF;
@@ -645,17 +645,17 @@ class InvoicePdfOxOrderTest extends \OxidTestCase
         $invoicePdfOxOrder->load('_testOrderId');
 
         //
-        $invoicePdfOxOrder->oxorder__oxdelcost = $this->getMock('oxfield', array('setValue'));
+        $invoicePdfOxOrder->oxorder__oxdelcost = $this->getMock('\OxidEsales\Eshop\Core\Field', array('setValue'));
         $invoicePdfOxOrder->oxorder__oxdelcost->expects($this->once())->method('setValue')->with($this->equalTo(0));
 
-        $invoicePdfOxOrder->oxorder__oxpaycost = $this->getMock('oxfield', array('setValue'));
+        $invoicePdfOxOrder->oxorder__oxpaycost = $this->getMock('\OxidEsales\Eshop\Core\Field', array('setValue'));
         $invoicePdfOxOrder->oxorder__oxpaycost->expects($this->once())->method('setValue')->with($this->equalTo(0));
 
-        $invoicePdfOxOrder->oxorder__oxordernr = $this->getMock('oxfield', array('setValue'));
+        $invoicePdfOxOrder->oxorder__oxordernr = $this->getMock('\OxidEsales\Eshop\Core\Field', array('setValue'));
         $invoicePdfOxOrder->oxorder__oxordernr->expects($this->once())->method('setValue')->with($this->equalTo('   ORDER_OVERVIEW_PDF_STORNO'), $this->equalTo(2));
 
         // marking as canceled
-        $invoicePdfOxOrder->oxorder__oxstorno = new oxField(1);
+        $invoicePdfOxOrder->oxorder__oxstorno = new Field(1);
 
         $invoicePdfOxOrder->exportStandart($oPdf);
     }
@@ -675,7 +675,7 @@ class InvoicePdfOxOrderTest extends \OxidTestCase
         $invoicePdfOxOrder->expects($this->once())->method('_setOrderArticlesToPdf');
 
         $invoicePdfOxOrder->load('_testOrderId');
-        $invoicePdfOxOrder->oxorder__oxdelsal = new oxField('1', oxField::T_RAW);
+        $invoicePdfOxOrder->oxorder__oxdelsal = new Field('1', Field::T_RAW);
         $invoicePdfOxOrder->exportStandart($oPdf);
     }
 
@@ -690,7 +690,7 @@ class InvoicePdfOxOrderTest extends \OxidTestCase
         $invoicePdfOxOrder = $this->getProxyClass("InvoicepdfOxOrder");
 
         $invoicePdfOxOrder->load('_testOrderId');
-        $invoicePdfOxOrder->oxorder__oxdelsal = new oxField("testSal");
+        $invoicePdfOxOrder->oxorder__oxdelsal = new Field("testSal");
 
         $oCur = $invoicePdfOxOrder->getConfig()->getCurrencyObject('EUR');
         $invoicePdfOxOrder->exportStandart($oPdf);
@@ -712,7 +712,7 @@ class InvoicePdfOxOrderTest extends \OxidTestCase
         $invoicePdfOxOrder->expects($this->once())->method('_setOrderArticlesToPdf');
 
         $invoicePdfOxOrder->load('_testOrderId');
-        $invoicePdfOxOrder->oxorder__oxdelsal = new oxField('1', oxField::T_RAW);
+        $invoicePdfOxOrder->oxorder__oxdelsal = new Field('1', Field::T_RAW);
         $invoicePdfOxOrder->exportDeliveryNote($oPdf);
     }
 
@@ -729,17 +729,17 @@ class InvoicePdfOxOrderTest extends \OxidTestCase
         $invoicePdfOxOrder->load('_testOrderId');
 
         //
-        $invoicePdfOxOrder->oxorder__oxdelcost = $this->getMock('oxfield', array('setValue'));
+        $invoicePdfOxOrder->oxorder__oxdelcost = $this->getMock('\OxidEsales\Eshop\Core\Field', array('setValue'));
         $invoicePdfOxOrder->oxorder__oxdelcost->expects($this->never())->method('setValue');
 
-        $invoicePdfOxOrder->oxorder__oxpaycost = $this->getMock('oxfield', array('setValue'));
+        $invoicePdfOxOrder->oxorder__oxpaycost = $this->getMock('\OxidEsales\Eshop\Core\Field', array('setValue'));
         $invoicePdfOxOrder->oxorder__oxpaycost->expects($this->never())->method('setValue');
 
-        $invoicePdfOxOrder->oxorder__oxordernr = $this->getMock('oxfield', array('setValue'));
+        $invoicePdfOxOrder->oxorder__oxordernr = $this->getMock('\OxidEsales\Eshop\Core\Field', array('setValue'));
         $invoicePdfOxOrder->oxorder__oxordernr->expects($this->once())->method('setValue')->with($this->equalTo('   ORDER_OVERVIEW_PDF_STORNO'), $this->equalTo(2));
 
         // marking as canceled
-        $invoicePdfOxOrder->oxorder__oxstorno = new oxField(1);
+        $invoicePdfOxOrder->oxorder__oxstorno = new Field(1);
 
         $invoicePdfOxOrder->exportDeliveryNote($oPdf);
     }
@@ -759,7 +759,7 @@ class InvoicePdfOxOrderTest extends \OxidTestCase
         $invoicePdfOxOrder->expects($this->once())->method('_setOrderArticlesToPdf');
 
         $invoicePdfOxOrder->load('_testOrderId');
-        $invoicePdfOxOrder->oxorder__oxdelsal = new oxField(null, oxField::T_RAW);
+        $invoicePdfOxOrder->oxorder__oxdelsal = new Field(null, Field::T_RAW);
         $invoicePdfOxOrder->exportDeliveryNote($oPdf);
     }
 
@@ -782,8 +782,8 @@ class InvoicePdfOxOrderTest extends \OxidTestCase
     {
         $invoicePdfOxOrder = $this->getProxyClass("InvoicepdfOxOrder");
 
-        $invoicePdfOxOrder->oxorder__oxartvat1 = new oxField('19', oxField::T_RAW);
-        $invoicePdfOxOrder->oxorder__oxartvatprice1 = new oxField('9', oxField::T_RAW);
+        $invoicePdfOxOrder->oxorder__oxartvat1 = new Field('19', Field::T_RAW);
+        $invoicePdfOxOrder->oxorder__oxartvatprice1 = new Field('9', Field::T_RAW);
 
         $this->assertEquals(array("19"=>9), $invoicePdfOxOrder->getProductVats(false));
     }
@@ -906,30 +906,30 @@ class InvoicePdfOxOrderTest extends \OxidTestCase
         $config = $this->getConfig();
 
         //set order
-        $order = oxNew("oxOrder");
+        $order = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
         $order->setId('_testOrderId');
-        $order->oxorder__oxshopid = new oxField($config->getShopId(), oxField::T_RAW);
-        $order->oxorder__oxuserid = new oxField("_testUserId", oxField::T_RAW);
-        $order->oxorder__oxbillcountryid = new oxField('10', oxField::T_RAW);
-        $order->oxorder__oxdelcountryid = new oxField('11', oxField::T_RAW);
-        $order->oxorder__oxdeltype = new oxField('_testDeliverySetId', oxField::T_RAW);
-        $order->oxorder__oxdelvat = new oxField('19', oxField::T_RAW);
-        $order->oxorder__oxdelcost = new oxField('21', oxField::T_RAW);
-        $order->oxorder__oxpaymentid = new oxField('_testPaymentId', oxField::T_RAW);
-        $order->oxorder__oxpaymenttype = new oxField('oxidcashondel', oxField::T_RAW);
-        $order->oxorder__oxpayvat = new oxField('19', oxField::T_RAW);
-        $order->oxorder__oxpaycost = new oxField('6', oxField::T_RAW);
-        $order->oxorder__oxcardid = new oxField('_testWrappingId', oxField::T_RAW);
-        $order->oxorder__oxtotalnetsum = new oxField('12', oxField::T_RAW);
-        $order->oxorder__oxtotalbrutsum = new oxField('13', oxField::T_RAW);
-        $order->oxorder__oxartvat1  = new oxField('19', oxField::T_RAW);
-        $order->oxorder__oxartvatprice1  = new oxField('7', oxField::T_RAW);
-        $order->oxorder__oxcurrency = new oxField('1', oxField::T_RAW);
-        $order->oxorder__oxdiscount = new oxField('5', oxField::T_RAW);
-        $order->oxorder__oxvoucherdiscount = new oxField('6', oxField::T_RAW);
-        $order->oxorder__oxwrapvat = new oxField('19', oxField::T_RAW);
-        $order->oxorder__oxwrapcost = new oxField('8', oxField::T_RAW);
-        $order->oxorder__oxtotalordersum = new oxField('25', oxField::T_RAW);
+        $order->oxorder__oxshopid = new Field($config->getShopId(), Field::T_RAW);
+        $order->oxorder__oxuserid = new Field("_testUserId", Field::T_RAW);
+        $order->oxorder__oxbillcountryid = new Field('10', Field::T_RAW);
+        $order->oxorder__oxdelcountryid = new Field('11', Field::T_RAW);
+        $order->oxorder__oxdeltype = new Field('_testDeliverySetId', Field::T_RAW);
+        $order->oxorder__oxdelvat = new Field('19', Field::T_RAW);
+        $order->oxorder__oxdelcost = new Field('21', Field::T_RAW);
+        $order->oxorder__oxpaymentid = new Field('_testPaymentId', Field::T_RAW);
+        $order->oxorder__oxpaymenttype = new Field('oxidcashondel', Field::T_RAW);
+        $order->oxorder__oxpayvat = new Field('19', Field::T_RAW);
+        $order->oxorder__oxpaycost = new Field('6', Field::T_RAW);
+        $order->oxorder__oxcardid = new Field('_testWrappingId', Field::T_RAW);
+        $order->oxorder__oxtotalnetsum = new Field('12', Field::T_RAW);
+        $order->oxorder__oxtotalbrutsum = new Field('13', Field::T_RAW);
+        $order->oxorder__oxartvat1  = new Field('19', Field::T_RAW);
+        $order->oxorder__oxartvatprice1  = new Field('7', Field::T_RAW);
+        $order->oxorder__oxcurrency = new Field('1', Field::T_RAW);
+        $order->oxorder__oxdiscount = new Field('5', Field::T_RAW);
+        $order->oxorder__oxvoucherdiscount = new Field('6', Field::T_RAW);
+        $order->oxorder__oxwrapvat = new Field('19', Field::T_RAW);
+        $order->oxorder__oxwrapcost = new Field('8', Field::T_RAW);
+        $order->oxorder__oxtotalordersum = new Field('25', Field::T_RAW);
         $order->save();
     }
 
@@ -938,18 +938,18 @@ class InvoicePdfOxOrderTest extends \OxidTestCase
      *
      * @param int $storno canceled product
      *
-     * @return oxOrderArticle
+     * @return \OxidEsales\Eshop\Application\Model\OrderArticle
      */
     private function insertTestOrderArticle($storno = 0)
     {
-        $orderArticle = oxNew("oxOrderArticle");
+        $orderArticle = oxNew(\OxidEsales\Eshop\Application\Model\OrderArticle::class);
         $orderArticle->setId('_testOrderArticleId');
-        $orderArticle->oxorderarticles__oxorderid = new oxField('_testOrderId', oxField::T_RAW);
-        $orderArticle->oxorderarticles__oxartid = new oxField('_testArticleId', oxField::T_RAW);
-        $orderArticle->oxorderarticles__oxamount = new oxField(5, oxField::T_RAW);
-        $orderArticle->oxorderarticles__oxvat = new oxField(19, oxField::T_RAW);
-        $orderArticle->oxorderarticles__oxvatprice = new oxField(7, oxField::T_RAW);
-        $orderArticle->oxorderarticles__oxstorno = new oxField($storno, oxField::T_RAW);
+        $orderArticle->oxorderarticles__oxorderid = new Field('_testOrderId', Field::T_RAW);
+        $orderArticle->oxorderarticles__oxartid = new Field('_testArticleId', Field::T_RAW);
+        $orderArticle->oxorderarticles__oxamount = new Field(5, Field::T_RAW);
+        $orderArticle->oxorderarticles__oxvat = new Field(19, Field::T_RAW);
+        $orderArticle->oxorderarticles__oxvatprice = new Field(7, Field::T_RAW);
+        $orderArticle->oxorderarticles__oxstorno = new Field($storno, Field::T_RAW);
         $orderArticle->save();
 
         return $orderArticle;

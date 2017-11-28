@@ -94,7 +94,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
      */
     public function translate($sString)
     {
-        return oxRegistry::getLang()->translateString($sString, $this->getSelectedLang());
+        return \OxidEsales\Eshop\Core\Registry::getLang()->translateString($sString, $this->getSelectedLang());
     }
 
     /**
@@ -225,7 +225,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
         $this->pdfHeader($oPdf);
 
         // adding info data
-        switch (oxRegistry::getConfig()->getRequestParameter('pdftype')) {
+        switch (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('pdftype')) {
             case 'dnote':
                 $this->exportDeliveryNote($oPdf);
                 break;
@@ -248,7 +248,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
      */
     protected function _setBillingAddressToPdf($oPdf)
     {
-        $oLang = oxRegistry::getLang();
+        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
         $sSal = $this->oxorder__oxbillsal->value;
         try {
             $sSal = $oLang->translateString($this->oxorder__oxbillsal->value, $this->getSelectedLang());
@@ -273,7 +273,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
      */
     protected function _setDeliveryAddressToPdf($oPdf)
     {
-        $oLang = oxRegistry::getLang();
+        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
         $sSal = $this->oxorder__oxdelsal->value;
         try {
             $sSal = $oLang->translateString($this->oxorder__oxdelsal->value, $this->getSelectedLang());
@@ -332,7 +332,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
             $oPdf->text(45, $iStartPos, substr(strip_tags($this->_replaceExtendedChars($oOrderArt->oxorderarticles__oxtitle->getRawValue(), true)), 0, 58));
 
             if ($blShowPrice) {
-                $oLang = oxRegistry::getLang();
+                $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
 
                 // product VAT percent
                 $oPdf->text(140 - $oPdf->getStringWidth($oOrderArt->oxorderarticles__oxvat->value), $iStartPos, $oOrderArt->oxorderarticles__oxvat->value);
@@ -392,7 +392,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
         }
 
         // loading user
-        $oUser = oxNew('oxuser');
+        $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $oUser->load($this->oxorder__oxuserid->value);
 
         // user info
@@ -442,7 +442,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
         // order date
         $oPdf->setFont($oPdfBlock->getFont(), '', 10);
         $aOrderDate = explode(' ', $this->oxorder__oxorderdate->value);
-        $sOrderDate = oxRegistry::get("oxUtilsDate")->formatDBDate($aOrderDate[0]);
+        $sOrderDate = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->formatDBDate($aOrderDate[0]);
         $oPdf->text(15, $iTop + 8, $this->translate('ORDER_OVERVIEW_PDF_ORDERSFROM') . $sOrderDate . $this->translate('ORDER_OVERVIEW_PDF_ORDERSAT') . $oShop->oxshops__oxurl->value);
         $iTop += 16;
 
@@ -494,7 +494,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
         $oShop = $this->_getActShop();
         $oPdfBlock = oxNew('InvoicepdfBlock');
 
-        $oLang = oxRegistry::getLang();
+        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
         $sSal = $this->oxorder__oxdelsal->value;
         try {
             $sSal = $oLang->translateString($this->oxorder__oxdelsal->value, $this->getSelectedLang());
@@ -528,7 +528,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
         }
 
         // loading user info
-        $oUser = oxNew('oxuser');
+        $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $oUser->load($this->oxorder__oxuserid->value);
 
         // user info
@@ -569,7 +569,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
 
         // order date
         $aOrderDate = explode(' ', $this->oxorder__oxorderdate->value);
-        $sOrderDate = oxRegistry::get("oxUtilsDate")->formatDBDate($aOrderDate[0]);
+        $sOrderDate = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->formatDBDate($aOrderDate[0]);
         $oPdf->setFont($oPdfBlock->getFont(), '', 10);
         $oPdf->text(15, 119, $this->translate('ORDER_OVERVIEW_PDF_ORDERSFROM') . $sOrderDate . $this->translate('ORDER_OVERVIEW_PDF_ORDERSAT') . $oShop->oxshops__oxurl->value);
 

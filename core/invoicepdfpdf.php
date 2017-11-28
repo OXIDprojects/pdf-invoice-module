@@ -22,7 +22,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  */
 
-$myConfig = oxRegistry::getConfig();
+$myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
 $sTcPdfPath = $myConfig->getModulesDir() . "oe/invoicepdf/core/tcpdf/";
 $sTcPdfUrl = $myConfig->getConfigParam('sShopURL') . "modules/oe/invoicepdf/core/tcpdf/";
@@ -230,9 +230,9 @@ class InvoicepdfPDF extends \TCPDF
      */
     public function __construct($orientation = 'P', $unit = 'mm', $format = 'A4', $unicode = true, $encoding = 'UTF-8', $diskcache = false)
     {
-        $myConfig = oxRegistry::getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $unicode = $myConfig->isUtf();
-        $encoding = $unicode ? 'UTF-8' : oxRegistry::getLang()->translateString("charset");
+        $encoding = $unicode ? 'UTF-8' : \OxidEsales\Eshop\Core\Registry::getLang()->translateString("charset");
         //#1161: Thin line and unknown characters on every pdf page
         //we use myorder::pdfFooter()
         $this->setPrintFooter(false);
@@ -373,7 +373,7 @@ class InvoicepdfPDF extends \TCPDF
     {
         if ($family == 'Arial') {
             // overriding standard ..
-            $family = oxRegistry::getConfig()->isUtf() ? 'freesans' : '';
+            $family = \OxidEsales\Eshop\Core\Registry::getConfig()->isUtf() ? 'freesans' : '';
         }
 
         parent::SetFont($family, $style, $size, $fontfile);
