@@ -24,15 +24,14 @@
 
 namespace Unit\Modules\Oe\Invoicepdf\Controllers\Admin;
 
-use \oxField;
+use OxidEsales\Eshop\Core\Field;
 use \InvoicepdfOrder_Overview;
-use \oxRegistry;
 use \oxTestModules;
 
 /**
  * Tests for Order_Overview class
  */
-class InvoicepdfOrderOverviewTest extends \OxidTestCase
+class InvoicepdfOrderOverviewTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
     /**
      * Prepares test suite.
@@ -42,12 +41,8 @@ class InvoicepdfOrderOverviewTest extends \OxidTestCase
         parent::setUp();
 
         $invoicePdfOrderClass = getShopBasePath() . 'modules/oe/invoicepdf/controllers/admin/invoicepdforder_overview.php';
-        if (!file_exists($invoicePdfOrderClass)) {
-            $this->markTestSkipped('These tests only work when invoicePDF module is present.');
-        }
-
         if (!class_exists('InvoicepdfOrder_Overview', false)) {
-            class_alias('Order_Overview', 'InvoicepdfOrder_Overview_parent');
+            class_alias(\OxidEsales\Eshop\Application\Controller\Admin\OrderOverview::class, 'InvoicepdfOrder_Overview_parent');
             require_once $invoicePdfOrderClass;
         }
     }
@@ -74,16 +69,13 @@ class InvoicepdfOrderOverviewTest extends \OxidTestCase
         $oBase = oxNew('oxbase');
         $oBase->init("oxorderarticles");
         $oBase->setId("_testOrderArticleId");
-        $oBase->oxorderarticles__oxorderid = new oxField("testOrderId");
-        $oBase->oxorderarticles__oxamount = new oxField(1);
-        $oBase->oxorderarticles__oxartid = new oxField("1126");
-        $oBase->oxorderarticles__oxordershopid = new oxField($this->getConfig()->getShopId());
+        $oBase->oxorderarticles__oxorderid = new Field("testOrderId");
+        $oBase->oxorderarticles__oxamount = new Field(1);
+        $oBase->oxorderarticles__oxartid = new Field("1126");
+        $oBase->oxorderarticles__oxordershopid = new Field($this->getConfig()->getShopId());
         $oBase->save();
 
-        // testing..
-        $oView = oxNew('Order_Overview');
-
-        $oView = $this->getMock("Order_Overview", array("getEditObjectId"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\OrderOverview::class, array("getEditObjectId"));
         $oView->expects($this->any())->method('getEditObjectId')->will($this->returnValue('testOrderId'));
 
         $this->assertTrue($oView->canExport());
@@ -97,32 +89,32 @@ class InvoicepdfOrderOverviewTest extends \OxidTestCase
         $soxId = '_testOrderId';
 
         // writing test order
-        $oOrder = oxNew("oxOrder");
+        $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
         $oOrder->setId($soxId);
-        $oOrder->oxorder__oxshopid        = new oxField($this->getConfig()->getBaseShopId());
-        $oOrder->oxorder__oxuserid        = new oxField("oxdefaultadmin");
-        $oOrder->oxorder__oxbillcompany   = new oxField("Ihr Firmenname");
-        $oOrder->oxorder__oxbillemail     = new oxField(oxADMIN_LOGIN);
-        $oOrder->oxorder__oxbillfname     = new oxField("Hans");
-        $oOrder->oxorder__oxbilllname     = new oxField("Mustermann");
-        $oOrder->oxorder__oxbillstreet    = new oxField("Musterstr");
-        $oOrder->oxorder__oxbillstreetnr  = new oxField("10");
-        $oOrder->oxorder__oxbillcity      = new oxField("Musterstadt");
-        $oOrder->oxorder__oxbillcountryid = new oxField("a7c40f6320aeb2ec2.72885259");
-        $oOrder->oxorder__oxbillzip       = new oxField("79098");
-        $oOrder->oxorder__oxbillsal       = new oxField("Herr");
-        $oOrder->oxorder__oxpaymentid     = new oxField("1f53d82f6391b86db09786fd75b69cb9");
-        $oOrder->oxorder__oxpaymenttype   = new oxField("oxidcashondel");
-        $oOrder->oxorder__oxtotalnetsum   = new oxField(75.55);
-        $oOrder->oxorder__oxtotalbrutsum  = new oxField(89.9);
-        $oOrder->oxorder__oxtotalordersum = new oxField(117.4);
-        $oOrder->oxorder__oxdelcost       = new oxField(20);
-        $oOrder->oxorder__oxdelval        = new oxField(0);
-        $oOrder->oxorder__oxpaycost       = new oxField(7.5);
-        $oOrder->oxorder__oxcurrency      = new oxField("EUR");
-        $oOrder->oxorder__oxcurrate       = new oxField(1);
-        $oOrder->oxorder__oxdeltype       = new oxField("oxidstandard");
-        $oOrder->oxorder__oxordernr       = new oxField(1);
+        $oOrder->oxorder__oxshopid        = new Field($this->getConfig()->getBaseShopId());
+        $oOrder->oxorder__oxuserid        = new Field("oxdefaultadmin");
+        $oOrder->oxorder__oxbillcompany   = new Field("Ihr Firmenname");
+        $oOrder->oxorder__oxbillemail     = new Field(oxADMIN_LOGIN);
+        $oOrder->oxorder__oxbillfname     = new Field("Hans");
+        $oOrder->oxorder__oxbilllname     = new Field("Mustermann");
+        $oOrder->oxorder__oxbillstreet    = new Field("Musterstr");
+        $oOrder->oxorder__oxbillstreetnr  = new Field("10");
+        $oOrder->oxorder__oxbillcity      = new Field("Musterstadt");
+        $oOrder->oxorder__oxbillcountryid = new Field("a7c40f6320aeb2ec2.72885259");
+        $oOrder->oxorder__oxbillzip       = new Field("79098");
+        $oOrder->oxorder__oxbillsal       = new Field("Herr");
+        $oOrder->oxorder__oxpaymentid     = new Field("1f53d82f6391b86db09786fd75b69cb9");
+        $oOrder->oxorder__oxpaymenttype   = new Field("oxidcashondel");
+        $oOrder->oxorder__oxtotalnetsum   = new Field(75.55);
+        $oOrder->oxorder__oxtotalbrutsum  = new Field(89.9);
+        $oOrder->oxorder__oxtotalordersum = new Field(117.4);
+        $oOrder->oxorder__oxdelcost       = new Field(20);
+        $oOrder->oxorder__oxdelval        = new Field(0);
+        $oOrder->oxorder__oxpaycost       = new Field(7.5);
+        $oOrder->oxorder__oxcurrency      = new Field("EUR");
+        $oOrder->oxorder__oxcurrate       = new Field(1);
+        $oOrder->oxorder__oxdeltype       = new Field("oxidstandard");
+        $oOrder->oxorder__oxordernr       = new Field(1);
         $oOrder->save();
         $this->setRequestParameter("oxid", $soxId);
         oxTestModules::addFunction('oxUtils', 'setHeader', '{ if ( !isset( $this->_aHeaderData ) ) { $this->_aHeaderData = array();} $this->_aHeaderData[] = $aA[0]; }');
@@ -133,7 +125,7 @@ class InvoicepdfOrderOverviewTest extends \OxidTestCase
         $oView = new InvoicepdfOrder_Overview();
         $oView->createPDF();
 
-        $aHeaders = oxRegistry::getUtils()->getHeaders();
+        $aHeaders = \OxidEsales\Eshop\Core\Registry::getUtils()->getHeaders();
         $this->assertEquals("Pragma: public", $aHeaders[0]);
         $this->assertEquals("Cache-Control: must-revalidate, post-check=0, pre-check=0", $aHeaders[1]);
         $this->assertEquals("Expires: 0", $aHeaders[2]);
