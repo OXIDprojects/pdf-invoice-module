@@ -1,5 +1,5 @@
 {
-  "name": "oxid-esales/pdf-invoice-module",
+  "name": "oxid-projects/pdf-invoice-module",
   "description": "This is Invoice PDF module for OXID eShop.",
   "type": "oxideshop-module",
   "keywords": ["oxid", "modules", "eShop"],

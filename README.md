@@ -18,8 +18,7 @@ In order to install the module via composer, run the following commands in comma
 (where the shop's composer.json file resides).
 
 ```
-composer config repositories.oxid-esales/pdf-invoice-module vcs https://github.com/OXIDprojects/pdf-invoice-module
-composer require oxid-esales/pdf-invoice-module:dev-master
+composer require oxid-projects/pdf-invoice-module
 ```
 
 ### Module installation via repository cloning
