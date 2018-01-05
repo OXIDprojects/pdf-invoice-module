@@ -130,6 +130,16 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
         $oPdf->text(150, 281, $this->translate('ORDER_OVERVIEW_PDF_BANKCODE') . strip_tags($oShop->oxshops__oxbiccode->value));
         $oPdf->text(150, 284, $this->translate('ORDER_OVERVIEW_PDF_VATID') . strip_tags($oShop->oxshops__oxvatnumber->value));
         $oPdf->text(150, 287, $this->translate('ORDER_OVERVIEW_PDF_TAXID') . strip_tags($oShop->oxshops__oxtaxnumber->value));
+    
+        $myConfig = $this->getConfig();
+        $aSize = getimagesize($myConfig->getImageDir() . '/pdf_footer.jpg');
+
+        //image footer
+        if ($aSize && ($myConfig->getRequestParameter('pdftype') == 'standart' or $myConfig->getRequestParameter('pdftype') == 'dnote')) {
+            $iMargin = 195 - $aSize[0] * 0.2;
+            $oPdf->setLink($oShop->oxshops__oxurl->value);
+            $oPdf->image($myConfig->getImageDir() . '/pdf_footer.jpg', $iMargin, 246, $aSize[0] * 0.2, $aSize[1] * 0.2, '', $oShop->oxshops__oxurl->value);
+        }
     }
 
     /**
@@ -175,14 +185,16 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
 
         // loading active shop
         $oShop = $this->_getActShop();
-
-        //logo
+        
         $myConfig = $this->getConfig();
         $aSize = getimagesize($myConfig->getImageDir() . '/pdf_logo.jpg');
-        $iMargin = 195 - $aSize[0] * 0.2;
-        $oPdf->setLink($oShop->oxshops__oxurl->value);
-        $oPdf->image($myConfig->getImageDir() . '/pdf_logo.jpg', $iMargin, 10, $aSize[0] * 0.2, $aSize[1] * 0.2, '', $oShop->oxshops__oxurl->value);
-
+            
+        //logo
+        if ($myConfig->getRequestParameter('pdftype') == 'standart' or $myConfig->getRequestParameter('pdftype') == 'dnote') {
+            $iMargin = 195 - $aSize[0] * 0.2;
+            $oPdf->setLink($oShop->oxshops__oxurl->value);
+            $oPdf->image($myConfig->getImageDir() . '/pdf_logo.jpg', $iMargin, 10, $aSize[0] * 0.2, $aSize[1] * 0.2, '', $oShop->oxshops__oxurl->value);
+        }
         return 14 + $aSize[1] * 0.2;
     }
 
