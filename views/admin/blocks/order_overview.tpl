@@ -22,6 +22,8 @@
                                 SELECTED>[{oxmultilang ident="ORDER_OVERVIEW_PDF_STANDART"}]
                         </option>
                         <option value="dnote">[{oxmultilang ident="ORDER_OVERVIEW_PDF_DNOTE"}]</option>
+                        <option value="standart_without_logo">[{oxmultilang ident="ORDER_OVERVIEW_PDF_STANDART_WITHOUT_LOGO" }]</option>
+                        <option value="dnote_without_logo">[{oxmultilang ident="ORDER_OVERVIEW_PDF_DNOTE_WITHOUT_LOGO" }]</option>
                     </select>
                 </td>
             </tr>
