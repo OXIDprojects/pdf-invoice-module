@@ -238,8 +238,9 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
 
         // adding info data
         switch (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('pdftype')) {
-            case 'dnote':
-                $this->exportDeliveryNote($oPdf);
+			case ('dnote'):
+			case ('dnote_without_logo'):
+				$this->exportDeliveryNote($oPdf);
                 break;
             default:
                 $this->exportStandart($oPdf);
