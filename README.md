@@ -7,6 +7,7 @@ PDF invoice module for OXID eShop.
 ### Requirements
 
 * OXID eShop v6.*
+* PHP 7.*
 
 ## Installation
 
