@@ -187,13 +187,14 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
         $oShop = $this->_getActShop();
         
         $myConfig = $this->getConfig();
-        $aSize = getimagesize($myConfig->getImageDir() . '/pdf_logo.jpg');
+        $pdfLogoPath = $this->getConfig()->getImagePath('pdf_logo.jpg');
+        $aSize = getimagesize($pdfLogoPath);
             
         //logo
         if ($myConfig->getRequestParameter('pdftype') == 'standart' or $myConfig->getRequestParameter('pdftype') == 'dnote') {
             $iMargin = 195 - $aSize[0] * 0.2;
             $oPdf->setLink($oShop->oxshops__oxurl->value);
-            $oPdf->image($myConfig->getImageDir() . '/pdf_logo.jpg', $iMargin, 10, $aSize[0] * 0.2, $aSize[1] * 0.2, '', $oShop->oxshops__oxurl->value);
+            $oPdf->image($pdfLogoPath, $iMargin, 10, $aSize[0] * 0.2, $aSize[1] * 0.2, '', $oShop->oxshops__oxurl->value);
         }
         return 14 + $aSize[1] * 0.2;
     }
