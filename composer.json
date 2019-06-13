@@ -2,8 +2,8 @@
   "name": "oxid-projects/pdf-invoice-module",
   "description": "This is Invoice PDF module for OXID eShop.",
   "type": "oxideshop-module",
-  "keywords": ["oxid", "modules", "eShop"],
-  "homepage": "https://www.oxid-esales.com/en/home.html",
+  "keywords": ["oxid", "modules", "eShop", "invoice", "pdf"],
+  "homepage": "https://github.com/OXIDprojects/pdf-invoice-module",
   "license": [
     "GPL-3.0",
     "proprietary"
@@ -11,6 +11,9 @@
   "extra": {
     "oxideshop": {
       "target-directory": "oe/invoicepdf"
+    },
+    "branch-alias": {
+      "dev-master": "2.0.x-dev"
     }
   }
 }
