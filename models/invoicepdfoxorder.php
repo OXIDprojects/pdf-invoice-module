@@ -190,7 +190,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
         $pdfLogoPath = $this->getConfig()->getImagePath('pdf_logo.jpg');
 
         //check if pdf logo exists
-        if(file_exists($pdfLogoPath) {
+        if (file_exists($pdfLogoPath)) {
             $aSize = getimagesize($pdfLogoPath);
 
             //logo
@@ -200,7 +200,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
                 $oPdf->image($pdfLogoPath, $iMargin, 10, $aSize[0] * 0.2, $aSize[1] * 0.2, '', $oShop->oxshops__oxurl->value);
             }
             return 14 + $aSize[1] * 0.2;
-        }else{
+        } else {
             //we have no logo
             return 14;
         }
