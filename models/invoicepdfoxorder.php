@@ -130,7 +130,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
         $oPdf->text(150, 281, $this->translate('ORDER_OVERVIEW_PDF_BANKCODE') . strip_tags($oShop->oxshops__oxbiccode->value));
         $oPdf->text(150, 284, $this->translate('ORDER_OVERVIEW_PDF_VATID') . strip_tags($oShop->oxshops__oxvatnumber->value));
         $oPdf->text(150, 287, $this->translate('ORDER_OVERVIEW_PDF_TAXID') . strip_tags($oShop->oxshops__oxtaxnumber->value));
-    
+
         $myConfig = $this->getConfig();
         $aSize = getimagesize($myConfig->getImageDir() . '/pdf_footer.jpg');
 
@@ -187,16 +187,17 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
         $oShop = $this->_getActShop();
 
         $myConfig = $this->getConfig();
+        $pdfLogoPath = $this->getConfig()->getImagePath('pdf_logo.jpg');
 
         //check if pdf logo exists
-        if(file_exists($myConfig->getImageDir() . '/pdf_logo.jpg')) {
-            $aSize = getimagesize($myConfig->getImageDir() . '/pdf_logo.jpg');
+        if(file_exists($pdfLogoPath) {
+            $aSize = getimagesize($pdfLogoPath);
 
             //logo
-            if ($myConfig->getRequestParameter('pdftype') == 'standart' or $myConfig->getRequestParameter('pdftype') == 'dnote') {
+            if ($myConfig->getRequestParameter('pdftype') === 'standart' or $myConfig->getRequestParameter('pdftype') === 'dnote') {
                 $iMargin = 195 - $aSize[0] * 0.2;
                 $oPdf->setLink($oShop->oxshops__oxurl->value);
-                $oPdf->image($myConfig->getImageDir() . '/pdf_logo.jpg', $iMargin, 10, $aSize[0] * 0.2, $aSize[1] * 0.2, '', $oShop->oxshops__oxurl->value);
+                $oPdf->image($pdfLogoPath, $iMargin, 10, $aSize[0] * 0.2, $aSize[1] * 0.2, '', $oShop->oxshops__oxurl->value);
             }
             return 14 + $aSize[1] * 0.2;
         }else{
