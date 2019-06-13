@@ -19,6 +19,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Security
 
+## [2.0.2] - 2019-06-13
+
+### Fixed
+- fixed PDF generation should not fail if the logo file is missing
+- fixed child themes issues
+
+### Added
+- gitattributes to exclude files in zip
+- composer improvemnts
+- language entries
+
 ## [2.0.1] - 2017-12-07
 
 ### Added
