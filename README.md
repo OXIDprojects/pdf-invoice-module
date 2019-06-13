@@ -33,20 +33,6 @@ git clone https://github.com/OXIDprojects/pdf-invoice-module.git invoicepdf
 * Make a new folder "invoicepdf" in the **modules/oe/ directory** of your shop installation. 
 * Download the https://github.com/OXIDprojects/pdf-invoice-module/archive/master.zip file and unpack it into the created folder.
 
-### Add the translations to the admin translations files ("Application/views/admin/LANG")
-
-de/lang.php:
-```
-'ORDER_OVERVIEW_PDF_STANDART_WITHOUT_LOGO'           => 'Rechnung ohne Logos',
-'ORDER_OVERVIEW_PDF_DNOTE_WITHOUT_LOGO'              => 'Lieferschein ohne Logos',
-```
-
-en/lang.php:
-```
-'ORDER_OVERVIEW_PDF_STANDART_WITHOUT_LOGO'           => 'Invoice without Logos',
-'ORDER_OVERVIEW_PDF_DNOTE_WITHOUT_LOGO'              => 'Deliv. Note without Logos',
-```
-
 ## Activate Module
 
 - Activate the module in the administration panel.
