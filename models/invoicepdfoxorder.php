@@ -185,17 +185,24 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
 
         // loading active shop
         $oShop = $this->_getActShop();
-        
+
         $myConfig = $this->getConfig();
-        $aSize = getimagesize($myConfig->getImageDir() . '/pdf_logo.jpg');
-            
-        //logo
-        if ($myConfig->getRequestParameter('pdftype') == 'standart' or $myConfig->getRequestParameter('pdftype') == 'dnote') {
-            $iMargin = 195 - $aSize[0] * 0.2;
-            $oPdf->setLink($oShop->oxshops__oxurl->value);
-            $oPdf->image($myConfig->getImageDir() . '/pdf_logo.jpg', $iMargin, 10, $aSize[0] * 0.2, $aSize[1] * 0.2, '', $oShop->oxshops__oxurl->value);
+
+        //check if pdf logo exists
+        if(file_exists($myConfig->getImageDir() . '/pdf_logo.jpg')) {
+            $aSize = getimagesize($myConfig->getImageDir() . '/pdf_logo.jpg');
+
+            //logo
+            if ($myConfig->getRequestParameter('pdftype') == 'standart' or $myConfig->getRequestParameter('pdftype') == 'dnote') {
+                $iMargin = 195 - $aSize[0] * 0.2;
+                $oPdf->setLink($oShop->oxshops__oxurl->value);
+                $oPdf->image($myConfig->getImageDir() . '/pdf_logo.jpg', $iMargin, 10, $aSize[0] * 0.2, $aSize[1] * 0.2, '', $oShop->oxshops__oxurl->value);
+            }
+            return 14 + $aSize[1] * 0.2;
+        }else{
+            //we have no logo
+            return 14;
         }
-        return 14 + $aSize[1] * 0.2;
     }
 
     /**
