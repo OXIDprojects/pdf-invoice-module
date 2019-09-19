@@ -119,17 +119,29 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
         $oPdf->text(15, 287, strip_tags($oShop->oxshops__oxcountry->getRawValue()));
 
         /* column 2 - phone, fax, url, email address */
-        $oPdf->text(85, 275, $this->translate('ORDER_OVERVIEW_PDF_PHONE') . strip_tags($oShop->oxshops__oxtelefon->value));
-        $oPdf->text(85, 278, $this->translate('ORDER_OVERVIEW_PDF_FAX') . strip_tags($oShop->oxshops__oxtelefax->value));
+        if ($oShop->oxshops__oxtelefon->value) {
+            $oPdf->text(85, 275, $this->translate('ORDER_OVERVIEW_PDF_PHONE') . strip_tags($oShop->oxshops__oxtelefon->value));
+        }
+        if ($oShop->oxshops__oxtelefax->value) {
+            $oPdf->text(85, 278, $this->translate('ORDER_OVERVIEW_PDF_FAX') . strip_tags($oShop->oxshops__oxtelefax->value));
+        }
         $oPdf->text(85, 281, strip_tags($oShop->oxshops__oxurl->value));
         $oPdf->text(85, 284, strip_tags($oShop->oxshops__oxorderemail->value));
 
         /* column 3 - bank information */
         $oPdf->text(150, 275, strip_tags($oShop->oxshops__oxbankname->getRawValue()));
-        $oPdf->text(150, 278, $this->translate('ORDER_OVERVIEW_PDF_ACCOUNTNR') . strip_tags($oShop->oxshops__oxibannumber->value));
-        $oPdf->text(150, 281, $this->translate('ORDER_OVERVIEW_PDF_BANKCODE') . strip_tags($oShop->oxshops__oxbiccode->value));
-        $oPdf->text(150, 284, $this->translate('ORDER_OVERVIEW_PDF_VATID') . strip_tags($oShop->oxshops__oxvatnumber->value));
-        $oPdf->text(150, 287, $this->translate('ORDER_OVERVIEW_PDF_TAXID') . strip_tags($oShop->oxshops__oxtaxnumber->value));
+        if ($oShop->oxshops__oxibannumber->value) {
+            $oPdf->text(150, 278, $this->translate('ORDER_OVERVIEW_PDF_ACCOUNTNR') . strip_tags($oShop->oxshops__oxibannumber->value));
+        }
+        if ($oShop->oxshops__oxbiccode->value) {
+            $oPdf->text(150, 281, $this->translate('ORDER_OVERVIEW_PDF_BANKCODE') . strip_tags($oShop->oxshops__oxbiccode->value));
+        }
+        if ($oShop->oxshops__oxvatnumber->value) {
+            $oPdf->text(150, 284, $this->translate('ORDER_OVERVIEW_PDF_VATID') . strip_tags($oShop->oxshops__oxvatnumber->value));
+        }
+        if ($oShop->oxshops__oxtaxnumber->value) {
+            $oPdf->text(150, 287, $this->translate('ORDER_OVERVIEW_PDF_TAXID') . strip_tags($oShop->oxshops__oxtaxnumber->value));
+        }
 
         $myConfig = $this->getConfig();
         $aSize = getimagesize($myConfig->getImageDir() . '/pdf_footer.jpg');
