@@ -285,6 +285,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
         $oPdf->text(15, 75, $this->oxorder__oxbillzip->value . ' ' . $this->oxorder__oxbillcity->getRawValue());
         $oPdf->setFont($oPdfBlock->getFont(), '', 10);
         $oPdf->text(15, 79, $this->oxorder__oxbillcountry->getRawValue());
+        $oPdf->text(15, 83, $this->oxorder__oxbillemail->getRawValue());
     }
 
     /**
@@ -502,10 +503,14 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
         $siteH += $iHeight + 8;
 
         $oPdf->text(15, $siteH, $this->translate('ORDER_OVERVIEW_PDF_GREETINGS'));
+
+        //order remark
+        $oPdf->setFont($oPdfBlock->getFont(), '', 10);
+        $oPdf->text(15, $siteH +10, $this->translate('ORDER_OVERVIEW_PDF_ADDINFO')  .  $this->oxorder__oxdeladdinfo->getRawValue());
+
     }
 
-    /**
-     * Generating delivery note pdf.
+    /**    * Generating delivery note pdf.
      *
      * @param object $oPdf pdf document object
      */
