@@ -75,4 +75,5 @@ $aLang = array(
     'ORDER_OVERVIEW_PDF_DELIVNOTE'             => 'Lieferschein Nr.',
     'ORDER_OVERVIEW_PDF_STANDART_WITHOUT_LOGO' => 'Rechnung ohne Logos',
     'ORDER_OVERVIEW_PDF_DNOTE_WITHOUT_LOGO'    => 'Lieferschein ohne Logos',
+    'ORDER_OVERVIEW_PDF_ADDINFO'               => 'Bestellbemerkung (Zus Info):',
 );

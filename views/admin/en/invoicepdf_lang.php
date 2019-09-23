@@ -75,4 +75,5 @@ $aLang = array(
     'ORDER_OVERVIEW_PDF_DELIVNOTE'             => 'Delivery note nr.',
     'ORDER_OVERVIEW_PDF_STANDART_WITHOUT_LOGO' => 'Invoice without logos',
     'ORDER_OVERVIEW_PDF_DNOTE_WITHOUT_LOGO'    => 'Deliv. note without logos',
+    'ORDER_OVERVIEW_PDF_ADDINFO'               => 'Order note (Zus Info)',
 );
