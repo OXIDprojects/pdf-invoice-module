@@ -506,8 +506,9 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
 
         //order remark
         $oPdf->setFont($oPdfBlock->getFont(), '', 10);
-        $oPdf->text(15, $siteH +10, $this->translate('ORDER_OVERVIEW_PDF_ADDINFO')  .  $this->oxorder__oxdeladdinfo->getRawValue());
-
+        if ($this->oxorder__oxdeladdinfo->value) {
+            $oPdf->text(15, $siteH + 10, $this->translate('ORDER_OVERVIEW_PDF_ADDINFO') . $this->oxorder__oxdeladdinfo->getRawValue());
+        }
     }
 
     /**    * Generating delivery note pdf.
