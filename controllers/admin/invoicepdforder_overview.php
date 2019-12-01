@@ -77,7 +77,7 @@ class InvoicepdfOrder_Overview extends InvoicepdfOrder_Overview_parent
             if ($oOrder->load($soxId)) {
                 $oUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
                 $sTrimmedBillName = trim($oOrder->oxorder__oxbilllname->getRawValue());
-                $sFilename = utf8_decode($oOrder->oxorder__oxordernr->value . "_" . $sTrimmedBillName . ".pdf");
+                $sFilename = ($oOrder->oxorder__oxordernr->value . "_" . $sTrimmedBillName . ".pdf");
                 $sFilename = $this->makeValidFileName($sFilename);
                 ob_start();
                 $oOrder->genPDF($sFilename, \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("pdflanguage"));
