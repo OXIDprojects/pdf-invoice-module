@@ -296,9 +296,9 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
     protected function _setDeliveryAddressToPdf($oPdf)
     {
         $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
-        $sSal = $this->oxorder__oxdelname->value;
+        $sSal = $this->oxorder__oxdellname->value;
         try {
-            $sSal = $oLang->translateString($this->oxorder__oxdelname->value, $this->getSelectedLang());
+            $sSal = $oLang->translateString($this->oxorder__oxdellname->value, $this->getSelectedLang());
         } catch (Exception $e) {
         }
         $oPdfBlock = oxNew('InvoicepdfBlock');
