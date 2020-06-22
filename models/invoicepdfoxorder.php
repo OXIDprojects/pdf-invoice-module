@@ -421,7 +421,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
         $this->_setBillingAddressToPdf($oPdf);
 
         // delivery address
-        if ($this->oxorder__oxdelsal->value) {
+        if ($this->oxorder__oxdellname->value) {
             $this->_setDeliveryAddressToPdf($oPdf);
         }
 
@@ -440,7 +440,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
         $oPdf->text(195 - $oPdf->getStringWidth($sCustNr), 59, $sCustNr);
 
         // setting position if delivery address is used
-        if ($this->oxorder__oxdelsal->value) {
+        if ($this->oxorder__oxdellname->value) {
             $iTop = 115;
         } else {
             $iTop = 91;
