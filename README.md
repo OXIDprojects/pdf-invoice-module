@@ -28,10 +28,26 @@ Clone the module to your OXID eShop **modules/oe/** directory:
 git clone https://github.com/OXIDprojects/pdf-invoice-module.git invoicepdf
 ```
 
+Now you have to install the module with the oe-console, via command-prompt respectively ssh,
+in order to get it listet in the backend under modules:
+
+````
+vendor/bin/oe-console oe:module:install-configuration source/modules/oe/invoicepdf
+````
+
+
 ### Module installation from zip package
 
 * Make a new folder "invoicepdf" in the **modules/oe/ directory** of your shop installation. 
 * Download the https://github.com/OXIDprojects/pdf-invoice-module/archive/master.zip file and unpack it into the created folder.
+
+Now you have to install the module with the oe-console, via command-prompt respectively ssh,
+in order to get it listet in the backend under modules:
+
+````
+vendor/bin/oe-console oe:module:install-configuration source/modules/oe/invoicepdf
+````
+
 
 ## Activate Module
 
