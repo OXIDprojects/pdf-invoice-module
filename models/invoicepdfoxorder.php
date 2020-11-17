@@ -144,13 +144,15 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
         }
 
         $myConfig = $this->getConfig();
-        $aSize = getimagesize($myConfig->getImageDir() . '/pdf_footer.jpg');
-
-        //image footer
-        if ($aSize && ($myConfig->getRequestParameter('pdftype') == 'standart' or $myConfig->getRequestParameter('pdftype') == 'dnote')) {
-            $iMargin = 195 - $aSize[0] * 0.2;
-            $oPdf->setLink($oShop->oxshops__oxurl->value);
-            $oPdf->image($myConfig->getImageDir() . '/pdf_footer.jpg', $iMargin, 246, $aSize[0] * 0.2, $aSize[1] * 0.2, '', $oShop->oxshops__oxurl->value);
+        $footerImage = $myConfig->getImageDir() . '/pdf_footer.jpg';
+        if(file_exists($footerImage)) {
+            $aSize = getimagesize($footerImage);
+            //image footer
+            if ($aSize && ($myConfig->getRequestParameter('pdftype') == 'standart' or $myConfig->getRequestParameter('pdftype') == 'dnote')) {
+                $iMargin = 195 - $aSize[0] * 0.2;
+                $oPdf->setLink($oShop->oxshops__oxurl->value);
+                $oPdf->image($footerImage, $iMargin, 246, $aSize[0] * 0.2, $aSize[1] * 0.2, '', $oShop->oxshops__oxurl->value);
+            }
         }
     }
 
