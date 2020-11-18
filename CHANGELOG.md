@@ -19,6 +19,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Security
 
+## [2.2.0] - 2020-11-18
+
+### Fixed
+- fixed string to int cast in tcpdf
+- check if footerImage exists
+- oxdellname must be filled in for delivery address
+- check for umlauts in oxbilllname
+- Delivery address is not output if database field "oxdelsal" is not filled out.
+
 ## [2.1.0] - 2019-06-13
 
 ### Fixed
