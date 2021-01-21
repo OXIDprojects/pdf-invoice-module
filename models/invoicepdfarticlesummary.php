@@ -335,7 +335,7 @@ class InvoicepdfArticleSummary extends InvoicepdfBlock
             $this->_oData->oxorder__oxpaycost->setValue(0);
         }
 
-        if ($oConfig->getConfigParam('blShowVATForDelivery')) {
+        if ($oConfig->getConfigParam('blShowVATForPayCharge')) {
             if ($this->_oData->oxorder__oxpayvat->value) {
                 // payment netto
                 $iStartPos += 4;
