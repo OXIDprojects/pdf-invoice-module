@@ -335,7 +335,7 @@ class InvoicepdfArticleSummary extends InvoicepdfBlock
             $this->_oData->oxorder__oxpaycost->setValue(0);
         }
 
-        if ($oConfig->getConfigParam('blShowVATForDelivery')) {
+        if ($oConfig->getConfigParam('blShowVATForPayCharge')) {
             if ($this->_oData->oxorder__oxpayvat->value) {
                 // payment netto
                 $iStartPos += 4;
@@ -355,7 +355,14 @@ class InvoicepdfArticleSummary extends InvoicepdfBlock
                 $this->text(45, $iStartPos, $sVatValueText);
                 $this->text(195 - $this->_oPdf->getStringWidth($sPayCostVAT), $iStartPos, $sPayCostVAT);
 
-            }
+            }else{
+				//payment netto with negative discount without VAT.
+				$iStartPos += 4;
+				$sPayCostNetto = $oLang->formatCurrency($this->_oData->getOrderPaymentPrice()->getNettoPrice(), $this->_oData->getCurrency()) . ' ' . $this->_oData->getCurrency()->name;
+				$this->text(45, $iStartPos, $this->_oData->translate('ORDER_OVERVIEW_PDF_PAYMENTIMPACT'));
+				$this->text(195 - $this->_oPdf->getStringWidth($sPayCostNetto), $iStartPos, $sPayCostNetto);
+				$iStartPos += 4;
+			}
 
             // if canceled order, reset value
 
