@@ -19,6 +19,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Security
 
+## [2.2.1] - 2020-11-18
+
+### Fixed
+- fixed wrong parameter blShowVATForDelivery, should be blShowVATForPayCharge
+
 ## [2.2.0] - 2020-11-18
 
 ### Fixed
