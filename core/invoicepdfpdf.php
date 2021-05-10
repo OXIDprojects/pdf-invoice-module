@@ -207,7 +207,7 @@ require_once $sTcPdfPath . "tcpdf.php";
 
 /**
  * TCPDF class wrapper, set/overrides oxid specific functionality
- * 
+ *
  * @deprecated since v5.3 (2016-08-06); class will be moved to the InvoicePDF module.
  */
 class InvoicepdfPDF extends \TCPDF
@@ -271,7 +271,7 @@ class InvoicepdfPDF extends \TCPDF
                 }
             } else {
                 //Tag
-                if ($e{0} == '/') {
+                if ($e[0] == '/') {
                     $this->CloseTag(strtoupper(substr($e, 1)));
                 } else {
                     //Extract attributes
