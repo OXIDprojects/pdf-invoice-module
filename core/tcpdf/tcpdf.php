@@ -3668,9 +3668,9 @@ if (!class_exists('TCPDF', false)) {
 			* UTF-8 (hex): 0xC2 0xAD (c2ad)
 			* UTF-8 character: chr(194).chr(173)
 			*/
-			$txt = preg_replace('/([\\xc2]{1}[\\xad]{1})/', '', $txt);
+			$txt = preg_replace('/([\\xc2][1][\\xad][1])/', '', $txt);
 			if (!$this->isunicode) {
-				$txt = preg_replace('/([\\xad]{1})/', '', $txt);
+				$txt = preg_replace('/([\\xad][1])/', '', $txt);
 			}
 			return $txt;
 		}
@@ -7659,7 +7659,7 @@ if (!class_exists('TCPDF', false)) {
 		 * @access public
 		 */
 		public function addHtmlLink($url, $name, $fill=0, $firstline=false, $color='', $style=-1) {
-			if (!$this->empty_string($url) AND ($url[0] == '#')) {
+			if (!$this->empty_string[$url] AND ($url[0] == '#')) {
 				// convert url to internal link
 				$page = intval(substr($url, 1));
 				$url = $this->AddLink();
@@ -11918,7 +11918,7 @@ if (!class_exists('TCPDF', false)) {
 					case 'V':
 					case 'L':
 					case 'C': {
-						$line[$len-1] = strtolower($cmd);
+						$line[$len-1] = strtolower[$cmd];
 						$this->_out($line);
 						break;
 					}
@@ -12812,7 +12812,7 @@ if (!class_exists('TCPDF', false)) {
 								$decors = explode(' ', strtolower($dom[$key]['style']['text-decoration']));
 								foreach ($decors as $dec) {
 									$dec = trim($dec);
-									if (!$this->empty_string($dec)) {
+									if (!$this->empty_string[$dec]) {
 										if ($dec[0] == 'u') {
 											$dom[$key]['fontstyle'] .= 'U';
 										} elseif ($dec[0] == 'l') {
@@ -13384,9 +13384,16 @@ if (!class_exists('TCPDF', false)) {
 												}
 												// justify block
 												$pmid = preg_replace_callback('/([0-9\.\+\-]*)[\s]('.$strpiece[1][0].')[\s]('.$strpiece[2][0].')([\s]*)/x',
-													create_function('$matches', 'global $spacew;
+													
+
+													function($matches){
+													'global $spacew;
 													$newx = sprintf("%.2F",(floatval($matches[1]) + $spacew));
-													return "".$newx." ".$matches[2]." x*#!#*x".$matches[3].$matches[4];'), $pmid, 1);
+													return $newx." ".$matches[2]." x*#!#*x".$matches[3].$matches[4]';
+													}
+													,$pmid, 1);
+													
+
 												break;
 											}
 											case 're': {
@@ -13395,9 +13402,17 @@ if (!class_exists('TCPDF', false)) {
 												$currentxpos = $xmatches[1];
 												// justify block
 												$pmid = preg_replace_callback('/([0-9\.\+\-]*)[\s]([0-9\.\+\-]*)[\s]([0-9\.\+\-]*)[\s]('.$strpiece[1][0].')[\s]('.$strpiece[2][0].')([\s]*)/x',
-													create_function('$matches', 'global $spacew;
+													
+
+													function($matches)
+													{
+													'global $spacew;
 													$newx = sprintf("%.2F",(floatval($matches[1]) + $spacew));
-													return "".$newx." ".$matches[2]." ".$matches[3]." ".$matches[4]." x*#!#*x".$matches[5].$matches[6];'), $pmid, 1);
+													return $newx." ".$matches[2]." ".$matches[3]." ".$matches[4]." x*#!#*x".$matches[5].$matches[6]';
+													}
+													,$pmid, 1);
+													
+
 												break;
 											}
 											case 'c': {
@@ -13406,11 +13421,18 @@ if (!class_exists('TCPDF', false)) {
 												$currentxpos = $xmatches[1];
 												// justify block
 												$pmid = preg_replace_callback('/([0-9\.\+\-]*)[\s]([0-9\.\+\-]*)[\s]([0-9\.\+\-]*)[\s]([0-9\.\+\-]*)[\s]([0-9\.\+\-]*)[\s]('.$strpiece[1][0].')[\s]('.$strpiece[2][0].')([\s]*)/x',
-													create_function('$matches', 'global $spacew;
-													$newx1 = sprintf("%.3F",(floatval($matches[1]) + $spacew));
-													$newx2 = sprintf("%.3F",(floatval($matches[3]) + $spacew));
-													$newx3 = sprintf("%.3F",(floatval($matches[5]) + $spacew));
-													return "".$newx1." ".$matches[2]." ".$newx2." ".$matches[4]." ".$newx3." ".$matches[6]." x*#!#*x".$matches[7].$matches[8];'), $pmid, 1);
+													
+
+												function($matches)
+												{
+												'global $spacew;
+												$newx1 = sprintf("%.3F",(floatval($matches[1]) + $spacew));
+												$newx2 = sprintf("%.3F",(floatval($matches[3]) + $spacew));
+												$newx3 = sprintf("%.3F",(floatval($matches[5]) + $spacew));
+												return $newx1." ".$matches[2]." ".$newx2." ".$matches[4]." ".$newx3." ".$matches[6]." x*#!#*x".$matches[7].$matches[8]';
+													}
+													,$pmid, 1);
+													
 												break;
 											}
 										}
@@ -13435,10 +13457,18 @@ if (!class_exists('TCPDF', false)) {
 										$pmidtemp = preg_replace('/[\\\][\(]/x', '\\#!#OP#!#', $pmidtemp);
 										$pmidtemp = preg_replace('/[\\\][\)]/x', '\\#!#CP#!#', $pmidtemp);
 										$pmid = preg_replace_callback("/\[\(([^\)]*)\)\]/x",
-													create_function('$matches', 'global $spacew;
+													
+
+													function($matches)
+													{
+													'global $spacew;
 													$matches[1] = str_replace("#!#OP#!#", "(", $matches[1]);
 													$matches[1] = str_replace("#!#CP#!#", ")", $matches[1]);
-													return "[(".str_replace(chr(0).chr(32), ") ".($spacew)." (", $matches[1]).")]";'), $pmidtemp);
+													return "[(".str_replace(chr(0).chr(32), ") ".($spacew)." (", $matches[1]).")]"';
+													}
+													,$pmidtemp);
+													
+
 										$this->setPageBuffer($startlinepage, $pstart."\n".$pmid."\n".$pend);
 										$endlinepos = strlen($pstart."\n".$pmid."\n");
 									} else {
@@ -15638,17 +15668,26 @@ if (!class_exists('TCPDF', false)) {
 			$jfrompage = $frompage;
 			$jtopage = $topage;
 			$this->javascript = preg_replace_callback('/this\.addField\(\'([^\']*)\',\'([^\']*)\',([0-9]+)/',
-				create_function('$matches', 'global $jfrompage, $jtopage;
-				$pagenum = intval($matches[3]) + 1;
-				if (($pagenum >= $jtopage) AND ($pagenum < $jfrompage)) {
-					$newpage = ($pagenum + 1);
-				} elseif ($pagenum == $jfrompage) {
-					$newpage = $jtopage;
-				} else {
-					$newpage = $pagenum;
-				}
-				--$newpage;
-				return "this.addField(\'".$matches[1]."\',\'".$matches[2]."\',".$newpage."";'), $tmpjavascript);
+				
+
+
+			function($matches, $jtopage)
+			{
+			'global $jfrompage;
+			$pagenum = intval($matches[3]) + 1;
+			if (($pagenum >= $jtopage) AND ($pagenum < $jfrompage)) {
+				$newpage = ($pagenum + 1);
+			} elseif ($pagenum == $jfrompage) {
+				$newpage = $jtopage;
+			} else {
+				$newpage = $pagenum;
+			}
+			--$newpage;
+			return "this.addField(\'".$matches[1]."\',\'".$matches[2]."\',".$newpage.""';
+													}
+													,$tmpjavascript);
+													
+
 			// return to last page
 			$this->lastPage(true);
 			return true;
@@ -15775,7 +15814,9 @@ if (!class_exists('TCPDF', false)) {
 			global $jpage;
 			$jpage = $page;
 			$this->javascript = preg_replace_callback('/this\.addField\(\'([^\']*)\',\'([^\']*)\',([0-9]+)/',
-				create_function('$matches', 'global $jpage;
+				function($matches)
+				{
+				'global $jpage;
 				$pagenum = intval($matches[3]) + 1;
 				if ($pagenum >= $jpage) {
 					$newpage = ($pagenum - 1);
@@ -15785,7 +15826,10 @@ if (!class_exists('TCPDF', false)) {
 					$newpage = $pagenum;
 				}
 				--$newpage;
-				return "this.addField(\'".$matches[1]."\',\'".$matches[2]."\',".$newpage."";'), $tmpjavascript);
+				return "this.addField(\'".$matches[1]."\',\'".$matches[2]."\',".$newpage.""';
+													}
+													,$tmpjavascript);
+				
 			// return to last page
 			$this->lastPage(true);
 			return true;
